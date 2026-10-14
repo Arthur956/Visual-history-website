@@ -1,0 +1,557 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Media from '../components/Media.astro';
+import T from '../components/T.astro';
+import { strings } from '../i18n/strings';
+import { routes } from '../routes';
+
+const modes = [
+  {
+    kicker: 'FLAGSHIP · ON-SITE',
+    title: 'Mixed Reality',
+    heading: 'Stand in the forum as it was.',
+    text: 'Our flagship mode. Visitors wear a lightweight mixed-reality headset and see the reconstruction anchored 1:1 onto the real foundations, aligned with LiDAR scans of the site.',
+    points: [
+      'LiDAR-anchored to the real foundations at 1:1 scale',
+      'Interactive hotspots on objects, inscriptions and rooms',
+      'Animated period life: markets, rituals, daily routines',
+    ],
+    stripe: ['#6b4a2a', '#4a321d'] as [string, string],
+  },
+  {
+    kicker: 'VISITOR CENTRES · CLASSROOMS',
+    title: 'Immersive VR time travel',
+    heading: 'Time travel, wherever your audience is.',
+    text: 'A fully immersive 360° journey through the reconstruction, built for places away from the site itself.',
+    points: [
+      '360° environments with spatial audio',
+      'For visitor centres, classrooms and travelling exhibitions',
+      'Seated and standing versions for accessible use',
+    ],
+    stripe: ['#3f3428', '#2e261e'] as [string, string],
+  },
+];
+
+const eras = [
+  { id: 'ad62', title: 'AD 62 · The forum before the earthquake', sub: 'Temples intact, the city at its height.', bg: '#3e3324', alt: 'Reconstruction of the Pompeii street in AD 62, before the earthquake' },
+  { id: 'ad79', title: 'AD 79 · The city in its final days', sub: 'Repairs under way, markets busy, Vesuvius on the horizon.', bg: '#4a321d', alt: 'Reconstruction of the Pompeii street in AD 79, shortly before the eruption' },
+  { id: 'today', title: 'Today · The excavated site', sub: 'What visitors see when they arrive.', bg: '#2c2b29', alt: 'The excavated Pompeii street today, with Vesuvius behind' },
+];
+
+const stages = [
+  ['Historical research & validation', 'Archives, excavation reports and expert review. Nothing is modelled before it is sourced.'],
+  ['3D modelling', 'Architecture, materials and period life built from the validated research.'],
+  ['Spatial anchoring', 'LiDAR scans of the site align the model to the real foundations.'],
+  ['Optimisation & UX testing', 'Tested on site with real visitors, including accessibility needs.'],
+  ['Deployment & handover', 'Installed, staff trained, and supported from day one.'],
+];
+
+const deliverables = [
+  'The reconstructed experience',
+  'Hardware package',
+  'CMS & analytics dashboard',
+  'Staff training',
+  'Ongoing maintenance and content updates',
+  'Optional content packs: new eras, events, languages',
+];
+
+// Calculator: starting values are placeholders from the design; tune them to a typical site.
+const calcFields = [
+  { key: 'visitors', label: 'Annual visitors', min: 5000, max: 500000, step: 5000, value: 60000, fmt: 'num' },
+  { key: 'ticket', label: 'Average ticket price', min: 2, max: 40, step: 1, value: 12, fmt: 'eur' },
+  { key: 'share', label: 'Visitors who choose the experience', min: 5, max: 80, step: 1, value: 25, fmt: 'pct' },
+  { key: 'addon', label: 'Experience add-on price', min: 2, max: 25, step: 1, value: 8, fmt: 'eur' },
+  { key: 'uplift', label: 'Increase in visitors', min: 0, max: 30, step: 1, value: 8, fmt: 'plus' },
+];
+const fmt = (kind: string, n: number) =>
+  kind === 'eur' ? '€' + Math.round(n).toLocaleString('en-IE')
+  : kind === 'pct' ? n + '%'
+  : kind === 'plus' ? '+' + n + '%'
+  : Math.round(n).toLocaleString('en-IE');
+const v = Object.fromEntries(calcFields.map((f) => [f.key, f.value]));
+const addonRev = v.visitors * (v.share / 100) * v.addon;
+const visitorRev = v.visitors * (v.uplift / 100) * v.ticket;
+
+const why = [
+  ['Spatially anchored MR', 'Reconstructions sit exactly on the real remains, not floating beside them.'],
+  ['Multi-era toggling', 'Move between periods of the same place and see how it changed.'],
+  ['Historian validation', 'Every scene reviewed by experts, with sources documented for curators and grant bodies.'],
+  ['Multi-modal delivery', 'One reconstruction powers both on-site mixed reality and off-site VR.'],
+  ['Accessibility-first', 'Captions, audio description, seated modes and large text from the start.'],
+  ['A compounding asset library', 'Every project grows a library of validated assets, so later content is faster to build.'],
+];
+
+const steps = [
+  ['Vision meeting', 'We listen to your site, story and goals.'],
+  ['Concept proposal', 'A tailored concept and experience outline.'],
+  ['Funding support', 'We prepare the grant or amortisation route.'],
+  ['Pilot', 'A first experience tested on your site.'],
+  ['Licensing', 'The platform runs and grows with you.'],
+];
+---
+<Base title="Visual History · Step into the past" active="home" overlayNav>
+  <div class="hero-track" data-hero>
+    <header class="hero">
+      <div class="hero-layer" style="background:#2c2b29">
+        <img src="/images/hero-ruin.webp" alt="The excavated ruins of a Pompeii street today, with Vesuvius behind" loading="eager" fetchpriority="high" />
+      </div>
+      <div class="hero-layer hero-recon" style="background:#4a321d">
+        <img src="/images/hero-reconstruction.webp" alt="The same Pompeii street reconstructed as it stood in AD 79" loading="eager" />
+      </div>
+      <div class="hero-seam" aria-hidden="true"></div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <Nav active="home" overlay />
+      <div id="main" class="hero-copy">
+        <h1 class="hero-title">
+          <T p={strings.hero.title1} /><br /><em><T p={strings.hero.title2} /></em>
+        </h1>
+        <p class="hero-promise"><T p={strings.hero.promise} /></p>
+        <div class="hero-ctas">
+          <a href={routes.contact} class="btn btn--primary"><T p={strings.cta.meeting} /></a>
+          <a href={`${routes.experience}#film`} class="btn btn--ghost"><span class="play-tri" aria-hidden="true"></span><T p={strings.cta.film} /></a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <main>
+    <!-- 02 Problem -->
+    <section class="section bg-light problem" aria-labelledby="problem-h">
+      <div class="wrap stack" style="gap:64px">
+        <div class="stack" style="gap:20px;max-width:880px">
+          <div class="kicker">The problem</div>
+          <h2 id="problem-h" class="h2">Ruins ask visitors for an imagination most of them can't supply.</h2>
+        </div>
+        <div class="problem-grid">
+          <div class="problem-item">
+            <div class="num">01</div>
+            <div class="item-title">A few stones, a sign, a floor plan.</div>
+            <p class="item-text">Without help, most visitors walk past foundations without ever seeing the building that stood there.</p>
+          </div>
+          <div class="problem-item">
+            <div class="num">02</div>
+            <div class="item-title">Younger audiences expect digital-first.</div>
+            <p class="item-text">Families, students and new visitors arrive with a phone in hand and expectations shaped by games and film.</p>
+          </div>
+          <div class="problem-item">
+            <div class="num">03</div>
+            <div class="item-title">Today's tools fall short.</div>
+            <p class="item-text">Most are shallow overlays or expensive one-off productions that age quickly and are never updated.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 Experience -->
+    <section id="experience" class="section bg-raised" aria-labelledby="exp-h">
+      <div class="wrap stack" style="gap:48px">
+        <div class="head-row">
+          <div class="stack" style="gap:20px;max-width:760px">
+            <div class="kicker">The experience</div>
+            <h2 id="exp-h" class="h2">One reconstruction, two ways to step inside it.</h2>
+          </div>
+          <a href={routes.experience} class="link-arrow">Explore both modes →</a>
+        </div>
+
+        <div role="tablist" aria-label="Experience modes" class="mode-tabs" data-tabs>
+          {modes.map((m, i) => (
+            <button type="button" role="tab" id={`mode-tab-${i}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`mode-panel-${i}`} tabindex={i === 0 ? 0 : -1} class="mode-tab">
+              <span class="mode-kicker">{m.kicker}</span>
+              <span class="mode-title">{m.title}</span>
+            </button>
+          ))}
+        </div>
+        {modes.map((m, i) => (
+          <div id={`mode-panel-${i}`} role="tabpanel" aria-labelledby={`mode-tab-${i}`} class="mode-panel" hidden={i !== 0}>
+            <Media ratio="4-3" slotId={`mode-mode-tab-${i}`} stripe={m.stripe} />
+            <div class="stack" style="gap:24px">
+              <h3 class="mode-h">{m.heading}</h3>
+              <p class="body-lg">{m.text}</p>
+              <ul class="dash-list">
+                {m.points.map((p) => <li><span aria-hidden="true">—</span>{p}</li>)}
+              </ul>
+            </div>
+          </div>
+        ))}
+
+        <div class="timeline" data-timeline>
+          <div class="timeline-head">
+            <h3 class="timeline-h">Try the timeline</h3>
+            <div class="timeline-hint">Drag, or use the arrow keys</div>
+          </div>
+          <div class="timeline-stage">
+            {eras.map((e, i) => (
+              <div class="era-layer" style={`background:${e.bg};opacity:${i === 1 ? 1 : 0}`} data-era-layer={i}>
+                <img src={`/images/era-${e.id}.webp`} alt={e.alt} loading="lazy" decoding="async" />
+              </div>
+            ))}
+            <div class="era-caption" aria-live="polite">
+              <div class="era-title" data-era-title>{eras[1].title}</div>
+              <div class="era-sub" data-era-sub>{eras[1].sub}</div>
+            </div>
+          </div>
+          <div class="stack" style="gap:14px">
+            <input type="range" min="0" max="200" step="1" value="100" aria-label="Period" aria-valuetext={eras[1].title} class="range range--era" data-era-range />
+            <div class="era-stops">
+              <button type="button" data-era-stop="0"><span class="stop-k">BEFORE</span><span class="stop-v">AD 62</span></button>
+              <button type="button" data-era-stop="100"><span class="stop-k">DURING</span><span class="stop-v">AD 79</span></button>
+              <button type="button" data-era-stop="200"><span class="stop-k">AFTER</span><span class="stop-v">Today</span></button>
+            </div>
+          </div>
+          <script type="application/json" data-era-data set:html={JSON.stringify(eras.map(({ title, sub }) => ({ title, sub })))} />
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 Process -->
+    <section id="process" class="section bg-light" aria-labelledby="proc-h">
+      <div class="wrap stack" style="gap:56px">
+        <div class="proc-head">
+          <div class="stack" style="gap:20px">
+            <div class="kicker">How a reconstruction is built</div>
+            <h2 id="proc-h" class="h2">Every stone starts with a historian.</h2>
+          </div>
+          <p class="body-lg" style="max-width:520px">Accuracy is what makes a reconstruction worth trusting. Each scene is researched with historians and validated before it reaches a visitor, and every source is documented.</p>
+        </div>
+        <ol class="stages">
+          {stages.map(([title, text], i) => (
+            <li class:list={{ 'is-first': i === 0 }}>
+              <div class="stage-num">{String(i + 1).padStart(2, '0')}</div>
+              <div class="stage-title">{title}</div>
+              <p class="stage-text">{text}</p>
+              {i === 0 && <div class="badge">HISTORIAN-VALIDATED</div>}
+            </li>
+          ))}
+        </ol>
+        <a href={routes.process} class="link-arrow">See the full process →</a>
+      </div>
+    </section>
+
+    <!-- 05 Platform + calculator -->
+    <section id="platform" class="section" aria-labelledby="plat-h">
+      <div class="wrap platform">
+        <div class="stack" style="gap:28px">
+          <div class="kicker">A platform, not a project</div>
+          <h2 id="plat-h" class="h2">A living experience that keeps improving after launch.</h2>
+          <ul class="deliverables">
+            {deliverables.map((d, i) => <li><span>{String(i + 1).padStart(2, '0')}</span>{d}</li>)}
+          </ul>
+        </div>
+        <div class="calc" data-calc>
+          <div class="stack" style="gap:8px">
+            <h3 class="calc-h">What could it earn your site?</h3>
+            <p class="calc-sub">Adjust the figures to match your site.</p>
+          </div>
+          <div class="stack" style="gap:22px">
+            {calcFields.map((f) => (
+              <label class="calc-field">
+                <span class="calc-label"><span>{f.label}</span><span class="calc-val" data-calc-out={f.key}>{fmt(f.fmt, f.value)}</span></span>
+                <input type="range" class="range" min={f.min} max={f.max} step={f.step} value={f.value} aria-valuetext={fmt(f.fmt, f.value)} data-calc-in={f.key} data-fmt={f.fmt} />
+              </label>
+            ))}
+          </div>
+          <div class="calc-result">
+            <div class="calc-k">POTENTIAL ADDITIONAL REVENUE PER YEAR</div>
+            <div class="calc-total" aria-live="polite" data-calc-total>{fmt('eur', addonRev + visitorRev)}</div>
+            <div class="calc-break">
+              <span>From experience add-on tickets</span><span class="calc-num" data-calc-addon>{fmt('eur', addonRev)}</span>
+              <span>From additional visitors</span><span class="calc-num" data-calc-visitors>{fmt('eur', visitorRev)}</span>
+            </div>
+            <p class="calc-note">Illustrative estimate based on your inputs, before licence costs. Not a forecast or guarantee.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 Why us -->
+    <section class="section bg-light" aria-labelledby="why-h">
+      <div class="wrap stack" style="gap:48px">
+        <div class="stack" style="gap:20px;max-width:760px">
+          <div class="kicker">Why Visual History</div>
+          <h2 id="why-h" class="h2">Built for heritage, from the foundations up.</h2>
+        </div>
+        <div class="why-grid">
+          {why.map(([t, d]) => (
+            <div class="stack" style="gap:10px">
+              <div class="item-title item-title--24">{t}</div>
+              <p class="item-text">{d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 How we work -->
+    <section id="how-we-work" class="section bg-raised" aria-labelledby="work-h">
+      <div class="wrap stack" style="gap:64px">
+        <div class="stack" style="gap:20px;max-width:820px">
+          <div class="kicker">How we work with you</div>
+          <h2 id="work-h" class="h2">Zero cost at signing.</h2>
+          <p class="body-lg">We take on the setup so your budget isn't the barrier. Choose the route that fits your institution.</p>
+        </div>
+        <div class="routes">
+          <div class="stack" style="gap:14px">
+            <div class="route-k">ROUTE A</div>
+            <div class="route-title">Grant-funded setup</div>
+            <p class="item-text">We act as your grant-readiness partner, preparing the concept, budget and documentation for programmes such as VLAIO, Creative Europe and Erfgoed Vlaanderen.</p>
+          </div>
+          <div class="stack" style="gap:14px">
+            <div class="route-k">ROUTE B</div>
+            <div class="route-title">Amortised setup</div>
+            <p class="item-text">The setup cost is spread across the licence term, so the experience can launch without an upfront investment.</p>
+          </div>
+        </div>
+        <ol class="journey">
+          {steps.map(([t, d], i) => (
+            <li class:list={{ 'is-first': i === 0 }}>
+              <span class="step-k">STEP {i + 1}</span>
+              <span class="step-t">{t}</span>
+              <span class="step-d">{d}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 08 Flagship partner -->
+    <section id="partner" class="section bg-light" aria-labelledby="partner-h">
+      <div class="wrap partner">
+        <div class="stack" style="gap:28px">
+          <div class="kicker">An invitation</div>
+          <h2 id="partner-h" class="h2 partner-h">We're selecting our first flagship partner in Flanders.</h2>
+          <p class="body-lg">We don't build speculatively. Our first full reconstruction will be made together with one partner, shaped around their site and their story.</p>
+        </div>
+        <div data-form-root>
+          <form class="lform" data-meeting-form>
+            <div class="lform-h">Book a vision meeting</div>
+            <div class="lform-grid">
+              <label>Name<input name="name" required autocomplete="name" /></label>
+              <label>Organisation<input name="org" required autocomplete="organization" /></label>
+              <label>Role<input name="role" autocomplete="organization-title" /></label>
+              <label>Site<input name="site" /></label>
+            </div>
+            <label>Message<textarea name="message" rows="3"></textarea></label>
+            <div class="lform-foot">
+              <button type="submit" class="btn btn--ink">Request a meeting</button>
+              <span>We reply within two working days, in English or Dutch.</span>
+            </div>
+          </form>
+          <p class="form-error" data-form-error hidden role="alert">Something went wrong sending your request. Please try again, or email us directly.</p>
+          <div class="sent" role="status" tabindex="-1" data-form-sent hidden>
+            <div class="sent-h">Thank you.</div>
+            <p>Arthur or Ignace will be in touch within two working days to arrange your vision meeting.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 Team -->
+    <section class="section" aria-labelledby="team-h">
+      <div class="wrap stack" style="gap:48px">
+        <div class="head-row">
+          <div class="stack" style="gap:20px">
+            <div class="kicker">Team &amp; advisors</div>
+            <h2 id="team-h" class="h2">The people you'll meet.</h2>
+          </div>
+          <a href={routes.about} class="link-arrow">About Visual History →</a>
+        </div>
+        <div class="team-grid">
+          <div class="team-card">
+            <Media ratio="4-5" slotId="team-arthur" stripe={['#2f2a25', '#25211d']} />
+            <div class="stack" style="gap:6px"><div class="team-name">Arthur</div><div class="team-role">Co-founder · role to confirm</div></div>
+          </div>
+          <div class="team-card">
+            <Media ratio="4-5" slotId="team-ignace" stripe={['#2f2a25', '#25211d']} />
+            <div class="stack" style="gap:6px"><div class="team-name">Ignace</div><div class="team-role">Co-founder · role to confirm</div></div>
+          </div>
+          <div class="team-card">
+            <div class="team-seat">Seat reserved for a historian or heritage advisor</div>
+            <div class="stack" style="gap:6px"><div class="team-name">Historian / heritage advisor</div><div class="team-role">To be announced</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  import '../scripts/meeting-form';
+  import '../scripts/home';
+</script>
+
+<style>
+  /* ---------- Hero: ruin → reconstruction wipe on scroll ---------- */
+  .hero-track { --p: 1; height: 220vh; position: relative; }
+  .hero-track.is-static { height: 100vh; }
+  .hero { position: sticky; top: 0; height: 100vh; min-height: 640px; overflow: hidden; }
+  .hero-layer { position: absolute; inset: 0; }
+  .hero-layer img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-recon { clip-path: inset(0 0 0 calc((1 - var(--p)) * 100%)); }
+  .hero-seam {
+    position: absolute; top: 0; bottom: 0; left: calc((1 - var(--p)) * 100%); width: 1px;
+    background: var(--amber-hi); box-shadow: 0 0 24px 4px rgba(245, 165, 36, .55);
+    opacity: var(--seam, 0); pointer-events: none;
+  }
+  .hero-shade {
+    position: absolute; inset: 0; pointer-events: none;
+    /* Top scrim (not in the prototype) keeps the nav at AA contrast over bright skies. */
+    background:
+      linear-gradient(180deg, rgba(10,11,13,.6) 0, rgba(10,11,13,0) 160px),
+      linear-gradient(90deg, rgba(10,11,13,.94) 0%, rgba(10,11,13,.72) 40%, rgba(10,11,13,0) 72%),
+      linear-gradient(0deg, rgba(10,11,13,.85) 0%, rgba(10,11,13,0) 45%);
+  }
+  .hero-copy {
+    position: absolute; left: var(--gutter); right: var(--gutter); bottom: clamp(48px, 8vh, 88px);
+    max-width: 660px; display: flex; flex-direction: column; gap: 24px;
+  }
+  .hero-title {
+    margin: 0; font: 500 clamp(60px, 8.4vw, 116px)/0.97 var(--sans);
+    letter-spacing: -.03em; color: var(--white);
+  }
+  .hero-title em {
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    letter-spacing: -.02em; color: var(--amber-hi);
+  }
+  .hero-promise { margin: 0; font: 400 clamp(17px, 1.5vw, 20px)/1.55 var(--sans); color: var(--text-2); text-wrap: pretty; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .hero-ctas .btn { align-self: auto; }
+
+  /* ---------- Problem ---------- */
+  .problem { padding-top: clamp(96px, 12vw, 160px); padding-bottom: clamp(96px, 12vw, 160px); }
+  .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px 48px; }
+  .problem-item { display: flex; flex-direction: column; gap: 14px; padding-top: 24px; border-top: 1px solid var(--ink); }
+  .num { font: 400 15px/1 var(--mono); color: var(--amber-ink); }
+
+  .head-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px; }
+  .head-row .link-arrow { align-self: auto; }
+
+  /* ---------- Experience tabs ---------- */
+  .mode-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .mode-tab {
+    text-align: left; cursor: pointer; padding: 20px 0 4px; border: 0; border-radius: 0;
+    border-top: 2px solid var(--line-2); background: transparent;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .mode-kicker { font: 500 12px/1 var(--mono); letter-spacing: .12em; color: var(--text-5); }
+  .mode-title { font: 500 26px/1.15 var(--sans); letter-spacing: -.03em; color: var(--text-4); }
+  .mode-tab[aria-selected='true'] { border-top-color: var(--amber); }
+  .mode-tab[aria-selected='true'] .mode-kicker { color: var(--amber); }
+  .mode-tab[aria-selected='true'] .mode-title { color: var(--text-1); }
+  .mode-panel {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(32px, 4vw, 64px); align-items: center;
+  }
+  .mode-h { margin: 0; font: 500 36px/1.12 var(--sans); letter-spacing: -.03em; color: var(--text-1); }
+  .dash-list {
+    margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px;
+    font: 400 17px/1.5 var(--sans); color: var(--text-2);
+  }
+  .dash-list li { display: flex; gap: 12px; }
+  .dash-list li span { color: var(--amber); }
+
+  /* ---------- Timeline ---------- */
+  .timeline { margin-top: 32px; padding-top: 56px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 28px; }
+  .timeline-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .timeline-h { margin: 0; font: 500 32px/1.15 var(--sans); letter-spacing: -.03em; color: var(--text-1); }
+  .timeline-hint { font: 400 14px/1.4 var(--mono); color: var(--text-4); }
+  .timeline-stage { position: relative; aspect-ratio: 21 / 9; min-height: 280px; border-radius: 6px; overflow: hidden; }
+  .era-layer { position: absolute; inset: 0; }
+  .era-layer img { width: 100%; height: 100%; object-fit: cover; }
+  .era-caption {
+    position: absolute; left: 20px; bottom: 20px; right: 20px; pointer-events: none;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .era-title { font: 500 clamp(28px, 3.4vw, 44px)/1 var(--sans); letter-spacing: -.03em; color: var(--white); text-shadow: 0 2px 20px rgba(0,0,0,.6); }
+  .era-sub { font: 400 16px/1.4 var(--sans); color: var(--text-body); text-shadow: 0 1px 12px rgba(0,0,0,.7); }
+  .range { width: 100%; accent-color: var(--amber); height: 24px; cursor: pointer; }
+  .range--era { height: 28px; }
+  .era-stops { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .era-stops button {
+    background: none; border: 0; cursor: pointer; padding: 6px 0;
+    display: flex; flex-direction: column; gap: 4px; text-align: left;
+  }
+  .era-stops button:nth-child(2) { align-items: center; text-align: center; }
+  .era-stops button:nth-child(3) { align-items: flex-end; text-align: right; }
+  .stop-k { font: 500 13px/1 var(--mono); letter-spacing: .12em; color: var(--amber); }
+  .stop-v { font: 400 15px/1.3 var(--sans); color: var(--text-3); }
+
+  /* ---------- Process strip ---------- */
+  .proc-head { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; align-items: end; }
+  .stages {
+    margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0;
+  }
+  .stages li { padding: 28px 24px 28px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .stages li.is-first { background: var(--light-alt); margin-right: 1px; }
+  .stage-num { font: 500 14px/1 var(--mono); color: var(--amber-ink); }
+  .stage-title { font: 500 24px/1.15 var(--sans); letter-spacing: -.03em; color: var(--ink); }
+  .stage-text { margin: 0; font: 400 16px/1.55 var(--sans); color: var(--ink-2); }
+  .badge {
+    align-self: flex-start; margin-top: auto;
+    font: 500 12px/1 var(--mono); letter-spacing: .08em; color: var(--ink);
+    border: 1px solid var(--ink); border-radius: 6px; padding: 7px 10px;
+  }
+
+  /* ---------- Platform & calculator ---------- */
+  .platform {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: clamp(40px, 5vw, 80px); align-items: start;
+  }
+  .deliverables { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+  .deliverables li {
+    padding: 18px 0; border-bottom: 1px solid var(--line);
+    display: grid; grid-template-columns: 40px 1fr; gap: 8px;
+    font: 400 18px/1.45 var(--sans); color: var(--text-2);
+  }
+  .deliverables li span { font: 400 14px/1.8 var(--mono); color: var(--text-5); }
+  .calc { background: var(--bg-card); border-radius: 8px; padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 28px; }
+  .calc-h { margin: 0; font: 500 30px/1.15 var(--sans); letter-spacing: -.03em; color: var(--text-1); }
+  .calc-sub { margin: 0; font: 400 16px/1.5 var(--sans); color: var(--text-4); }
+  .calc-field { display: flex; flex-direction: column; gap: 10px; }
+  .calc-label { display: flex; justify-content: space-between; gap: 12px; font: 500 15px/1.3 var(--sans); color: var(--text-2); }
+  .calc-val { font: 500 15px/1.3 var(--mono); color: var(--amber-hi); }
+  .calc-result { display: flex; flex-direction: column; gap: 14px; padding-top: 24px; border-top: 1px solid rgba(220, 222, 228, .16); }
+  .calc-k { font: 500 12px/1 var(--mono); letter-spacing: .12em; color: var(--text-5); }
+  .calc-total { font: 500 clamp(48px, 5.4vw, 72px)/1 var(--sans); letter-spacing: -.03em; color: var(--white); font-variant-numeric: tabular-nums; }
+  .calc-break { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; font: 400 15px/1.4 var(--sans); color: var(--text-4); }
+  .calc-num { font-family: var(--mono); color: var(--text-2); }
+  .calc-note { margin: 6px 0 0; font: 400 13px/1.5 var(--sans); color: var(--text-6); }
+
+  /* ---------- Why ---------- */
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px 48px; }
+
+  /* ---------- How we work ---------- */
+  .routes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 40px clamp(40px, 6vw, 96px); }
+  .route-k { font: 500 12px/1 var(--mono); letter-spacing: .12em; color: var(--amber); }
+  .route-title { font: 500 clamp(32px, 3.4vw, 44px)/1.1 var(--sans); letter-spacing: -.03em; color: var(--text-1); }
+  .journey { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
+  .journey li { display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 2px solid rgba(220, 222, 228, .22); }
+  .journey li.is-first { border-top-color: var(--amber); }
+  .step-k { font: 500 14px/1 var(--mono); color: var(--amber); }
+  .step-t { font: 500 22px/1.2 var(--sans); letter-spacing: -.03em; color: var(--text-1); }
+  .step-d { font: 400 15px/1.5 var(--sans); color: var(--text-4); }
+
+  /* ---------- Partner + light form ---------- */
+  .partner {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: clamp(40px, 6vw, 96px); align-items: start;
+  }
+  .partner-h { font-size: clamp(40px, 5vw, 68px); line-height: 1.04; }
+  .lform { display: flex; flex-direction: column; gap: 28px; }
+  .lform-h { font: 500 28px/1.2 var(--sans); letter-spacing: -.03em; color: var(--ink); }
+  .lform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px 32px; }
+  .lform label { display: flex; flex-direction: column; gap: 6px; font: 500 14px/1 var(--sans); color: var(--ink-2); }
+  .lform input, .lform textarea {
+    background: transparent; border: 0; border-bottom: 1px solid var(--ink); border-radius: 0;
+    padding: 12px 0; color: var(--ink); font-size: 18px;
+  }
+  .lform textarea { resize: vertical; }
+  .lform-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+  .lform-foot .btn { align-self: auto; }
+  .lform-foot span { font: 400 14px/1.5 var(--sans); color: var(--ink-2); }
+  .form-error { margin: 16px 0 0; font: 400 15px/1.5 var(--sans); color: var(--amber-ink); }
+  .sent { display: flex; flex-direction: column; gap: 14px; padding: 24px 0; outline: none; }
+  .sent-h { font: 500 32px/1.2 var(--sans); letter-spacing: -.03em; color: var(--ink); }
+  .sent p { margin: 0; font: 400 18px/1.6 var(--sans); color: var(--ink-2); }
+</style>

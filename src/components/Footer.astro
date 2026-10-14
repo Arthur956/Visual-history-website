@@ -1,0 +1,64 @@
+---
+import { routes } from '../routes';
+---
+<footer class="footer">
+  <div class="wrap stack" style="gap:56px">
+    <div class="cols">
+      <div class="brand">
+        <div class="brand-name">Visual History</div>
+        <div class="brand-line">The platform that turns heritage sites into living time machines.</div>
+        <a href={routes.contact} class="brand-cta">Book a vision meeting</a>
+      </div>
+      <div class="col">
+        <div class="col-head">PLATFORM</div>
+        <a href={routes.experience}>Experience</a>
+        <a href={routes.process}>Process</a>
+        <a href={`${routes.home}#platform`}>What you get</a>
+      </div>
+      <div class="col">
+        <div class="col-head">FOR</div>
+        <a href={routes.heritage}>Heritage sites &amp; museums</a>
+        <a href={routes.cities}>Cities &amp; tourism boards</a>
+        <a href={routes.about}>About us</a>
+        <a href={routes.contact}>Contact</a>
+      </div>
+    </div>
+    <div class="base">
+      <div>Visual History BV · Flanders, Belgium</div>
+      <div>Also exploring: immersive applications in health.</div>
+      <div class="legal"><a href="#">Privacy</a><a href="#">Accessibility statement</a></div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--bg-footer);
+    border-top: 1px solid rgba(220, 222, 228, .12);
+    padding: 72px var(--gutter) 40px;
+    color: var(--text-4);
+  }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+  .brand { display: flex; flex-direction: column; gap: 14px; grid-column: span 2; min-width: 0; }
+  .brand-name { font: 500 30px/1.1 var(--sans); letter-spacing: -.03em; color: var(--text-1); }
+  .brand-line { font: 400 17px/1.55 var(--sans); max-width: 380px; text-wrap: pretty; }
+  .brand-cta {
+    align-self: flex-start; margin-top: 8px;
+    font: 600 15px/1 var(--sans); color: var(--ink); background: var(--amber);
+    padding: 14px 20px; border-radius: 6px;
+  }
+  .brand-cta:hover { color: var(--ink); background: var(--amber-hi); }
+  .col { display: flex; flex-direction: column; gap: 12px; font-size: 16px; }
+  .col a { color: var(--text-2); }
+  .col a:hover { color: var(--amber-hi); }
+  .col-head { font: 500 12px/1 var(--mono); letter-spacing: .14em; color: var(--text-5); margin-bottom: 6px; }
+  .base {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;
+    padding-top: 28px; border-top: 1px solid rgba(220, 222, 228, .12);
+    font: 400 14px/1.5 var(--sans); color: var(--text-5);
+  }
+  .legal { display: flex; gap: 20px; }
+  .legal a { color: var(--text-5); }
+  /* At one column the brand block can't span two. */
+  @media (max-width: 480px) { .brand { grid-column: auto; } }
+</style>

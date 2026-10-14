@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import type { PageKey } from '../routes';
+
+interface Props {
+  title: string;
+  description?: string;
+  active: PageKey;
+  /** Home renders the nav itself, overlaid on the hero. */
+  overlayNav?: boolean;
+}
+const {
+  title,
+  description = 'Visual History builds historian-validated Mixed Reality and VR reconstructions of heritage sites, licensed as a platform to sites, museums and cities.',
+  active,
+  overlayNav = false,
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400&display=swap" rel="stylesheet" />
+  <script is:inline>
+    try { if (localStorage.getItem('vh-lang') === 'nl') document.documentElement.dataset.lang = 'nl'; } catch (e) {}
+  </script>
+</head>
+<body>
+  {!overlayNav && <Nav active={active} />}
+  <slot />
+  <Footer />
+  <script>
+    import '../scripts/lang';
+  </script>
+</body>
+</html>

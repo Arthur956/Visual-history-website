@@ -1,0 +1,11 @@
+---
+import { routes } from '../routes';
+interface Props { title: string; class?: string }
+const { title, class: cls = '' } = Astro.props;
+---
+<section class:list={['section--cta', cls]}>
+  <div class="wrap cta-row">
+    <h2 class="h2">{title}</h2>
+    <a href={routes.contact} class="btn btn--primary">Book a vision meeting</a>
+  </div>
+</section>

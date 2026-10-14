@@ -1,0 +1,20 @@
+---
+// Image with object-fit: cover. Without `src` it renders the striped placeholder
+// from the design, waiting for real photography (see README "Image slots").
+interface Props {
+  src?: string;
+  alt?: string;
+  slotId?: string;         // image-slot id from the design, kept for reference
+  ratio?: '4-3' | '4-5' | '16-9';
+  stripe?: [string, string];
+  class?: string;
+  loading?: 'lazy' | 'eager';
+}
+const { src, alt = '', slotId, ratio, stripe = ['#3f3428', '#2e261e'], class: cls = '', loading = 'lazy' } = Astro.props;
+const classes = ['media', ratio && `ratio-${ratio}`, !src && 'media--placeholder', cls].filter(Boolean).join(' ');
+const style = src ? undefined : `--stripe-a:${stripe[0]};--stripe-b:${stripe[1]}`;
+---
+<div class={classes} style={style} data-slot={slotId} aria-hidden={src && alt ? undefined : 'true'}>
+  {src && <img src={src} alt={alt} loading={loading} decoding="async" />}
+  <slot />
+</div>

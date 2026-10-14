@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import { contactEmail } from '../routes';
+
+const fields = [
+  { name: 'name', label: 'Name', required: true, autocomplete: 'name' },
+  { name: 'org', label: 'Organisation', required: true, autocomplete: 'organization' },
+  { name: 'role', label: 'Role', autocomplete: 'organization-title' },
+  { name: 'site', label: 'Site' },
+];
+---
+<Base title="Book a vision meeting · Visual History" active="contact">
+  <main id="main" class="contact">
+    <div class="wrap contact-grid">
+      <div class="stack" style="gap:28px">
+        <h1 class="contact-h">Tell us about your site.</h1>
+        <p class="contact-lede">A vision meeting is a no-obligation conversation of about an hour, on site or online, in English or Dutch.</p>
+        <div class="stack direct">
+          <span>Or write to us directly</span>
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+        </div>
+      </div>
+      <div data-form-root>
+        <form class="cform" data-meeting-form>
+          {fields.map((f) => (
+            <label class="row">
+              <span>{f.label}</span>
+              <input name={f.name} required={f.required} autocomplete={f.autocomplete} />
+            </label>
+          ))}
+          <label class="row">
+            <span>Message</span>
+            <textarea name="message" rows="3"></textarea>
+          </label>
+          <div class="cform-foot">
+            <span>We reply within two working days.</span>
+            <button type="submit" class="btn btn--primary" style="padding:18px 26px;align-self:auto">Request a meeting</button>
+          </div>
+        </form>
+        <p class="form-error" data-form-error hidden role="alert">Something went wrong sending your request. Please try again, or email us at {contactEmail}.</p>
+        <div class="sent" role="status" tabindex="-1" data-form-sent hidden>
+          <div class="sent-h">Thank you.</div>
+          <p>Arthur or Ignace will be in touch within two working days to arrange your vision meeting.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</Base>
+
+<script>
+  import '../scripts/meeting-form';
+</script>
+
+<style>
+  .contact { padding: clamp(56px, 8vw, 112px) var(--gutter) clamp(80px, 9vw, 128px); }
+  .contact-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: clamp(48px, 7vw, 112px); align-items: start;
+  }
+  .contact-h { margin: 0; font: 500 clamp(44px, 6vw, 80px)/1.02 var(--sans); letter-spacing: -.03em; color: var(--white); text-wrap: pretty; }
+  .contact-lede { margin: 0; font: 400 19px/1.6 var(--sans); color: var(--text-3); text-wrap: pretty; max-width: 460px; }
+  .direct { gap: 8px; padding-top: 12px; }
+  .direct span { font: 400 15px/1.4 var(--sans); color: var(--text-5); }
+  .direct a {
+    align-self: flex-start; font: 500 clamp(22px, 2.2vw, 28px)/1.3 var(--sans); letter-spacing: -.02em;
+    color: var(--text-1); border-bottom: 1px solid var(--amber); overflow-wrap: anywhere;
+  }
+  .direct a:hover { color: var(--amber-hi); }
+
+  .cform { display: flex; flex-direction: column; border-top: 1px solid var(--line-2); }
+  .row {
+    display: grid; grid-template-columns: minmax(110px, 160px) minmax(0, 1fr); align-items: baseline;
+    gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--line-2);
+  }
+  .row:focus-within { border-bottom-color: var(--amber); }
+  .row span { font: 500 15px/1.4 var(--sans); color: var(--text-5); }
+  .row input, .row textarea {
+    background: transparent; border: 0; outline: none; padding: 0; min-width: 0;
+    color: var(--text-1); font: 400 clamp(19px, 1.8vw, 22px)/1.4 var(--sans);
+  }
+  .row textarea { resize: vertical; }
+  .cform-foot {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 16px; padding-top: 32px;
+  }
+  .cform-foot span { font: 400 15px/1.5 var(--sans); color: var(--text-5); }
+  .form-error { margin: 16px 0 0; font: 400 15px/1.5 var(--sans); color: var(--amber-hi); }
+  .sent { display: flex; flex-direction: column; gap: 14px; padding: 24px 0; border-top: 1px solid var(--line-2); outline: none; }
+  .sent-h { font: 500 32px/1.2 var(--sans); letter-spacing: -.03em; color: var(--text-1); }
+  .sent p { margin: 0; font: 400 18px/1.6 var(--sans); color: var(--text-3); }
+</style>

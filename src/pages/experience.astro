@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro';
+import Media from '../components/Media.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+// Set to the vision film's URL (an .mp4/.webm file, or a YouTube/Vimeo embed URL)
+// once it exists. Captions should be provided in EN and NL.
+const filmSrc = '';
+const isEmbed = /youtube|youtu\.be|vimeo/.test(filmSrc);
+---
+<Base title="Experience · Visual History" active="experience">
+  <main id="main">
+    <header class="page-intro">
+      <div class="wrap stack" style="gap:24px">
+        <h1 class="h1-page" style="max-width:980px">One reconstruction. <em>Two ways in.</em></h1>
+        <p class="lede" style="max-width:720px">Each historian-validated reconstruction can be delivered on site through mixed reality, or as an immersive VR journey anywhere. Many partners combine both.</p>
+      </div>
+    </header>
+
+    <section id="mr" class="section--sub rule-top">
+      <div class="wrap split">
+        <Media ratio="4-3" slotId="experience-mr" stripe={['#6b4a2a', '#4a321d']} />
+        <div class="stack" style="gap:22px">
+          <h2 class="h2 h2--sub">On-site Mixed Reality</h2>
+          <p class="body-lg">Visitors walk the real site wearing a lightweight headset. Walls, roofs and people reappear exactly where they stood, aligned to LiDAR scans of the remaining foundations.</p>
+          <dl class="specs">
+            <dt>Anchoring</dt><dd>1:1 to the real foundations</dd>
+            <dt>Interaction</dt><dd>Hotspots on objects, inscriptions and rooms</dd>
+            <dt>Atmosphere</dt><dd>Animated period life and ambient sound</dd>
+            <dt>Best for</dt><dd>Ticketed tours, signature visits, events</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="vr" class="section--sub bg-raised">
+      <div class="wrap split">
+        <Media ratio="4-3" slotId="experience-vr" stripe={['#3f3428', '#2e261e']} />
+        <div class="stack" style="gap:22px">
+          <h2 class="h2 h2--sub">Immersive VR time travel</h2>
+          <p class="body-lg">A complete 360° journey through the reconstruction with spatial audio, for audiences who can't be on site, or for the moments before and after a visit.</p>
+          <dl class="specs">
+            <dt>Format</dt><dd>360° environments with spatial audio</dd>
+            <dt>Settings</dt><dd>Visitor centres, classrooms, travelling exhibitions</dd>
+            <dt>Access</dt><dd>Seated and standing versions</dd>
+            <dt>Best for</dt><dd>Education, off-site reach, bad-weather days</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="film" class="section--sub">
+      <div class="wrap stack" style="gap:28px">
+        <div class="stack" style="gap:16px;max-width:720px">
+          <div class="kicker">The vision film</div>
+          <h2 class="h2 h2--sub">Three minutes inside a living time machine.</h2>
+        </div>
+        <div class="film" data-film data-src={filmSrc} data-embed={isEmbed ? 'true' : undefined}>
+          <button type="button" class="play" aria-label="Play the vision film" disabled={!filmSrc} title={filmSrc ? undefined : 'The vision film is coming soon'}>
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <CtaBand title="Which mode fits your site? Let's work it out together." />
+  </main>
+</Base>
+
+<script>
+  const film = document.querySelector<HTMLElement>('[data-film]');
+  const src = film?.dataset.src;
+  film?.querySelector('button')?.addEventListener('click', () => {
+    if (!src) return;
+    let el: HTMLIFrameElement | HTMLVideoElement;
+    if (film.dataset.embed) {
+      el = document.createElement('iframe');
+      el.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
+      el.allow = 'autoplay; fullscreen; picture-in-picture';
+      el.allowFullscreen = true;
+      el.title = 'Visual History vision film';
+    } else {
+      el = document.createElement('video');
+      el.src = src;
+      el.controls = true;
+      el.autoplay = true;
+    }
+    film.replaceChildren(el);
+  });
+</script>
+
+<style>
+  .specs {
+    margin: 0; display: grid; grid-template-columns: 150px 1fr; gap: 14px 20px;
+    font: 400 17px/1.5 var(--sans); border-top: 1px solid var(--line); padding-top: 20px;
+  }
+  .specs dt { color: var(--text-5); }
+  .specs dd { margin: 0; color: var(--text-2); }
+  @media (max-width: 420px) { .specs { grid-template-columns: 110px 1fr; } }
+
+  .film {
+    position: relative; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden;
+    background: repeating-linear-gradient(135deg, #2f2a25 0 2px, #25211d 2px 16px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .film :global(iframe), .film :global(video) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+  .play {
+    width: 96px; height: 96px; border-radius: 50%; border: 0; background: var(--amber);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .play:hover:not(:disabled) { background: var(--amber-hi); }
+  .play:disabled { cursor: default; }
+  .play span {
+    width: 0; height: 0; margin-left: 6px;
+    border-left: 24px solid var(--ink); border-top: 15px solid transparent; border-bottom: 15px solid transparent;
+  }
+</style>

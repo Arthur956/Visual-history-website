@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import Media from '../components/Media.astro';
+import { routes } from '../routes';
+
+const values = [
+  ['Digital heritage preservation', 'LiDAR scans and validated 3D models become a lasting digital record of the site.'],
+  ['Accessibility', 'Captions, audio description, seated modes and multiple languages, designed in from the start.'],
+  ['Historian-validated accuracy', 'Every scene is sourced and reviewed, with documentation available for evaluation.'],
+];
+const formats = [
+  ['Signature MR moments', 'Headset experiences at key sites across the city, for ticketed tours and events.'],
+  ['VR for schools & visitor centres', 'The same reconstruction in classrooms and tourist offices, year-round.'],
+];
+---
+<Base title="For cities & tourism boards · Visual History" active="cities">
+  <main id="main">
+    <header class="page-intro">
+      <div class="wrap audience-hero">
+        <div class="stack" style="gap:24px">
+          <h1 class="h1-audience">Turn your whole city into a <em>time machine.</em></h1>
+          <p class="lede">Reconstruct lost streets, walls and landmarks across your city, and give residents, schools and visitors a shared way to see where they came from.</p>
+          <a href={routes.contact} class="btn btn--primary">Book a vision meeting</a>
+        </div>
+        <Media ratio="4-3" slotId="cities-hero" stripe={['#4a3a2a', '#352a1f']} />
+      </div>
+    </header>
+
+    <section class="section--sub bg-light" aria-labelledby="value-h">
+      <div class="wrap stack" style="gap:48px">
+        <div class="stack" style="gap:18px;max-width:780px">
+          <div class="kicker">For grant evaluators &amp; public funders</div>
+          <h2 id="value-h" class="h2 h2--sub">Public value you can document.</h2>
+        </div>
+        <div class="cols-3" style="gap:40px">
+          {values.map(([t, d]) => (
+            <div class="value">
+              <div class="item-title">{t}</div>
+              <p class="item-text">{d}</p>
+            </div>
+          ))}
+        </div>
+        <p class="body-lg" style="max-width:780px">We act as your grant-readiness partner for programmes such as VLAIO, Creative Europe and Erfgoed Vlaanderen, so setup can start at zero cost at signing.</p>
+      </div>
+    </section>
+
+    <section class="section--sub">
+      <div class="wrap stack" style="gap:40px">
+        <h2 class="h2 h2--sub">Built for a city's scale.</h2>
+        <div class="cols-3">
+          {formats.map(([t, d]) => (
+            <div class="stack" style="gap:10px">
+              <div class="item-title item-title--24">{t}</div>
+              <p class="item-text">{d}</p>
+            </div>
+          ))}
+        </div>
+        <div class="proof-slot">
+          <div class="stack" style="gap:8px">
+            <div class="proof-k">FLAGSHIP PARTNER</div>
+            <div class="proof-v">Your city here.</div>
+          </div>
+          <a href={routes.contact} class="btn btn--primary" style="align-self:auto">Book a vision meeting</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .audience-hero {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: clamp(32px, 5vw, 72px); align-items: end;
+  }
+  .value { display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 2px solid var(--amber-ink); }
+  .proof-slot {
+    border: 1px dashed rgba(245, 165, 36, .6); border-radius: 8px; padding: 32px;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px;
+  }
+  .proof-k { font: 500 12px/1 var(--mono); letter-spacing: .12em; color: var(--amber); }
+  .proof-v { font: italic 500 30px/1.2 var(--sans); letter-spacing: -.03em; color: var(--text-1); }
+</style>

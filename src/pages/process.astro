@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const stages = [
+  {
+    title: 'Historical research & validation',
+    text: 'We gather archives, excavation reports, comparable sites and period sources, then work with historians and your own curators to agree what can be shown with confidence and where interpretation is needed.',
+    receive: 'A source dossier and a validated reconstruction brief.',
+    badge: true,
+  },
+  {
+    title: '3D modelling',
+    text: 'Architecture, materials, objects and period life are modelled from the brief. Uncertain elements are flagged so they can be shown honestly to visitors.',
+    receive: 'Review renders at each milestone.',
+  },
+  {
+    title: 'Spatial anchoring',
+    text: 'We LiDAR-scan the site and align the model to the real foundations at 1:1, so the past appears exactly where it stood.',
+    receive: 'A digital scan of your site, useful for preservation records.',
+  },
+  {
+    title: 'Optimisation & UX testing',
+    text: 'The experience is tuned for comfort and performance, then tested on site with real visitors, including people with visual, hearing and mobility needs.',
+    receive: 'A test report with visitor feedback.',
+  },
+  {
+    title: 'Deployment & handover',
+    text: 'We install hardware, train your staff and connect the CMS and analytics dashboard. Maintenance and content updates continue for the length of the licence.',
+    receive: 'A live experience, trained team and ongoing support.',
+  },
+];
+---
+<Base title="Process · Visual History" active="process">
+  <main id="main">
+    <header class="page-intro">
+      <div class="wrap stack" style="gap:24px">
+        <h1 class="h1-page" style="max-width:1000px">Five stages. <em>One standard of accuracy.</em></h1>
+        <p class="lede" style="max-width:720px">Historian validation is the currency of trust in heritage. It opens every project and is documented at every stage, so curators, boards and grant evaluators can see exactly what a reconstruction is based on.</p>
+      </div>
+    </header>
+
+    <section class="section--sub bg-light">
+      <ol class="wrap stages">
+        {stages.map((s, i) => (
+          <li>
+            <div class="stack" style="gap:12px">
+              <span class="stage-k">STAGE {String(i + 1).padStart(2, '0')}</span>
+              <h2 class="stage-h">{s.title}</h2>
+              {s.badge && <span class="badge">HISTORIAN-VALIDATED</span>}
+            </div>
+            <p class="stage-text">{s.text}</p>
+            <div class="receive"><span>YOU RECEIVE</span>{s.receive}</div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <CtaBand title="Every project starts with a conversation about your site." />
+  </main>
+</Base>
+
+<style>
+  .stages { padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .stages li {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 24px 48px; padding: 40px 0; border-top: 1px solid var(--rule-warm);
+  }
+  .stages li:first-child { border-top-color: var(--ink); }
+  .stages li:last-child { border-bottom: 1px solid var(--rule-warm); }
+  .stage-k { font: 500 14px/1 var(--mono); color: var(--amber-ink); }
+  .stage-h { margin: 0; font: 500 34px/1.1 var(--sans); letter-spacing: -.03em; }
+  .badge {
+    align-self: flex-start; font: 500 12px/1 var(--mono); letter-spacing: .08em;
+    border: 1px solid var(--ink); border-radius: 6px; padding: 7px 10px;
+  }
+  .stage-text { margin: 0; font: 400 18px/1.6 var(--sans); color: var(--ink-2); text-wrap: pretty; }
+  .receive { display: flex; flex-direction: column; gap: 8px; font: 400 16px/1.5 var(--sans); color: var(--ink-2); }
+  .receive span { font: 500 12px/1 var(--mono); letter-spacing: .1em; color: var(--amber-ink); }
+</style>

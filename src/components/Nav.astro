@@ -1,0 +1,143 @@
+---
+import T from './T.astro';
+import { strings } from '../i18n/strings';
+import { routes, type PageKey } from '../routes';
+
+interface Props { active: PageKey; overlay?: boolean }
+const { active, overlay = false } = Astro.props;
+
+const links = (['experience', 'process', 'heritage', 'cities', 'about'] as const).map((key) => ({
+  key,
+  href: routes[key],
+  label: strings.nav[key],
+  current: key === active,
+}));
+---
+<nav aria-label="Main" class:list={['nav', { 'nav--overlay': overlay }]}>
+  <a href="#main" class="skip">Skip to content</a>
+  <a href={routes.home} aria-label="Visual History, home" class="logo">Visual History</a>
+
+  <div class="nav-wide">
+    {links.map((l) => (
+      <a href={l.href} aria-current={l.current ? 'page' : undefined} class:list={['nav-link', { 'is-current': l.current }]}>
+        <T p={l.label} />
+      </a>
+    ))}
+    <div role="group" aria-label="Language" class="lang">
+      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-set-lang="nl" aria-pressed="false">NL</button>
+    </div>
+    <a href={routes.contact} class="nav-cta"><T p={strings.cta.meeting} /></a>
+  </div>
+
+  <button type="button" class="menu-btn" aria-expanded="false" aria-controls="vh-menu" data-menu-toggle>Menu</button>
+  <div id="vh-menu" class="menu-panel" hidden>
+    {links.map((l) => (
+      <a href={l.href} aria-current={l.current ? 'page' : undefined} class:list={['menu-link', { 'is-current': l.current }]}>
+        <T p={l.label} />
+      </a>
+    ))}
+    <div role="group" aria-label="Language" class="menu-lang">
+      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-set-lang="nl" aria-pressed="false">NL</button>
+    </div>
+    <a href={routes.contact} class="menu-cta"><T p={strings.cta.meeting} /></a>
+  </div>
+</nav>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-menu-toggle]').forEach((btn) => {
+    const panel = document.getElementById(btn.getAttribute('aria-controls')!);
+    if (!panel) return;
+    const set = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+    };
+    btn.addEventListener('click', () => set(panel.hidden));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) { set(false); btn.focus(); }
+    });
+    // The panel only exists in the narrow layout; close it if the viewport widens.
+    matchMedia('(min-width: 1080px)').addEventListener('change', (e) => e.matches && set(false));
+  });
+</script>
+
+<style>
+  .nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px var(--gutter);
+    font-family: var(--sans);
+  }
+  .nav--overlay { position: absolute; top: 0; left: 0; right: 0; z-index: 10; }
+
+  .skip {
+    position: absolute;
+    left: -9999px;
+    top: 8px;
+    background: var(--amber);
+    color: var(--ink);
+    padding: 10px 14px;
+    font: 600 15px/1 var(--sans);
+    border-radius: 4px;
+    z-index: 5;
+  }
+  .skip:focus { left: 16px; color: var(--ink); }
+
+  .logo { font: 500 22px/1 var(--sans); letter-spacing: -.03em; color: var(--text-1); white-space: nowrap; }
+  .logo:hover { color: var(--text-1); }
+
+  .nav-wide { display: flex; align-items: center; gap: clamp(16px, 2.2vw, 30px); font: 500 15px/1 var(--sans); }
+  .nav-link { color: var(--text-2); padding: 6px 0; border-bottom: 1px solid transparent; white-space: nowrap; }
+  .nav-link:hover { color: var(--amber-hi); }
+  .nav-link.is-current { color: var(--amber-hi); border-bottom-color: var(--amber); }
+
+  .lang { display: flex; gap: 2px; font: 500 13px/1 var(--mono); }
+  .lang button {
+    background: none; border: 0; cursor: pointer; padding: 6px 7px; font: inherit;
+    color: var(--text-5); border-bottom: 1px solid transparent;
+  }
+  .lang button[aria-pressed='true'] { color: var(--text-1); border-bottom-color: var(--amber); }
+
+  .nav-cta {
+    font: 600 15px/1 var(--sans); color: var(--ink); background: var(--amber);
+    padding: 13px 18px; border-radius: 6px; white-space: nowrap;
+  }
+  .nav-cta:hover { color: var(--ink); background: var(--amber-hi); }
+
+  .menu-btn {
+    display: none;
+    font: 500 15px/1 var(--sans); color: var(--text-1);
+    background: rgba(12, 13, 15, .6); border: 1px solid rgba(245, 245, 244, .35);
+    border-radius: 6px; padding: 12px 18px; cursor: pointer;
+  }
+  .menu-panel {
+    position: absolute; top: 100%; left: 16px; right: 16px; z-index: 20;
+    background: var(--bg-card); border: 1px solid var(--line-2); border-radius: 8px;
+    padding: 20px; display: flex; flex-direction: column; gap: 6px;
+  }
+  .menu-link { color: var(--text-2); padding: 12px 4px; font: 500 18px/1 var(--sans); }
+  .menu-link.is-current { color: var(--amber-hi); }
+  .menu-lang { display: flex; gap: 8px; padding: 12px 0; }
+  .menu-lang button {
+    background: none; border: 1px solid rgba(245, 245, 244, .3); border-radius: 4px; cursor: pointer;
+    padding: 10px 14px; font: 500 14px/1 var(--mono); color: var(--text-5);
+  }
+  .menu-lang button[aria-pressed='true'] { color: var(--text-1); }
+  .menu-cta {
+    font: 600 16px/1 var(--sans); color: var(--ink); background: var(--amber);
+    padding: 16px 18px; border-radius: 6px; text-align: center;
+  }
+  .menu-cta:hover { color: var(--ink); }
+
+  @media (max-width: 1079.98px) {
+    .nav-wide { display: none; }
+    .menu-btn { display: block; }
+  }
+  @media (min-width: 1080px) {
+    .menu-panel { display: none !important; }
+  }
+</style>

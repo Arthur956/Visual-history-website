@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import Media from '../components/Media.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const principles = [
+  ['Story over information', 'Visitors remember how a place made them feel. We design for that first.'],
+  ['Accuracy you can cite', 'Historian validation and documented sources on every project.'],
+  ['Open to everyone', 'Accessibility is part of the brief, never an add-on.'],
+];
+const founders = ['Arthur', 'Ignace'];
+---
+<Base title="About · Visual History" active="about">
+  <main id="main">
+    <header class="page-intro">
+      <div class="wrap stack" style="gap:24px">
+        <h1 class="h1-page" style="max-width:1000px">The platform that turns heritage sites into <em>living time machines.</em></h1>
+        <p class="lede" style="max-width:720px">Visual History is a young company from Flanders, Belgium. We believe the past should be felt, not only read about, and that every reconstruction should be accurate enough for a historian and moving enough for a ten-year-old.</p>
+      </div>
+    </header>
+
+    <section class="section--sub bg-raised">
+      <div class="wrap cols-3">
+        {principles.map(([t, d], i) => (
+          <div class="stack" style="gap:10px">
+            <div class="p-num">{String(i + 1).padStart(2, '0')}</div>
+            <div class="item-title">{t}</div>
+            <p class="item-text">{d}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="section--sub" aria-labelledby="team-h">
+      <div class="wrap stack" style="gap:40px">
+        <h2 id="team-h" class="h2 h2--sub">Team &amp; advisors</h2>
+        <div class="team-grid">
+          {founders.map((name) => (
+            <div class="team-card">
+              <Media ratio="4-5" slotId={`about-${name.toLowerCase()}`} stripe={['#2f2a25', '#25211d']} />
+              <div class="stack" style="gap:6px">
+                <div class="team-name">{name}</div>
+                <div class="team-role">Co-founder · role to confirm</div>
+                <p class="team-bio">Short bio to be added.</p>
+              </div>
+            </div>
+          ))}
+          <div class="team-card">
+            <div class="team-seat seat-dashed">Seat reserved for a historian or heritage advisor</div>
+            <div class="stack" style="gap:6px">
+              <div class="team-name">Historian / heritage advisor</div>
+              <div class="team-role">To be announced</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <CtaBand title="We'd like to hear about your site." class="rule-top cta-sub" />
+  </main>
+</Base>
+
+<style>
+  .p-num { font: 500 12px/1 var(--mono); letter-spacing: .12em; color: var(--amber); }
+  .seat-dashed { background: transparent; border: 1px dashed rgba(245, 165, 36, .55); }
+  :global(.cta-sub) { padding: clamp(64px, 8vw, 112px) var(--gutter); }
+</style>

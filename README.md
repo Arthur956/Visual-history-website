@@ -1,25 +1,56 @@
-# CODING AGENTS: READ THIS FIRST
+# Visual History — marketing site
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+Static marketing site for Visual History, built with [Astro](https://astro.build) from the Claude Design handoff in [`project/`](project/) (design prototypes) and [`chats/`](chats/) (design conversation). See [`project/HANDOFF.md`](project/HANDOFF.md) for the original handoff note.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+```bash
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # static output in dist/
+npm run preview
+```
 
-## What you should do — IMPORTANT
+## Pages
 
-**Read the chat transcripts first.** There are 2 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+| Route | Source | Design |
+| --- | --- | --- |
+| `/` | `src/pages/index.astro` | `Home.dc.html` |
+| `/experience/` | `src/pages/experience.astro` | `Experience.dc.html` |
+| `/process/` | `src/pages/process.astro` | `Process.dc.html` |
+| `/heritage-sites/` | `src/pages/heritage-sites.astro` | `For Heritage Sites.dc.html` |
+| `/cities-and-tourism/` | `src/pages/cities-and-tourism.astro` | `For Cities and Tourism.dc.html` |
+| `/about/` | `src/pages/about.astro` | `About.dc.html` |
+| `/contact/` | `src/pages/contact.astro` | `Contact.dc.html` |
 
-**Read `project/Contact.dc.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+Shared pieces: `src/components/Nav.astro` (Site Nav), `src/components/Footer.astro` (Site Footer), `src/layouts/Base.astro`, design tokens in `src/styles/global.css`.
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+`Hero Directions.dc.html` was an exploration (direction 1a was picked and lives in the home hero), so it is not a page. `support.js` and `image-slot.js` are the design tool's runtime and aren't used by the site.
 
-## About the design files
+## Interactive parts
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+All plain TypeScript, no framework runtime:
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+- **Hero:** a scroll-driven wipe from today's ruin to the AD 79 reconstruction (`src/scripts/home.ts`). With `prefers-reduced-motion`, the hero is one screen tall and shows the reconstruction straight away.
+- **Experience tabs:** an ARIA tablist with arrow, Home and End key support.
+- **Timeline slider:** AD 62 → AD 79 → Today crossfade, using a native range input.
+- **Revenue calculator:** the starting values are placeholders from the design. Change them in `calcFields` in `index.astro`.
+- **EN/NL switcher:** saved in `localStorage` (`vh-lang`) and applied as `<html data-lang>`.
+- **Meeting forms:** home and contact (`src/scripts/meeting-form.ts`).
 
-## Bundle contents
+## Configuration
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `Design scope and deliverables` project files (HTML prototypes, assets, components)
+Copy `.env.example` to `.env`:
+
+- `PUBLIC_FORM_ENDPOINT`: where meeting requests are POSTed as `FormData` (Formspree, Basin, your own API…). **Set this before launch.** Without it, submitting opens a pre-filled email to the contact address instead.
+- `PUBLIC_CONTACT_EMAIL`: defaults to `hello@visualhistory.be`, which is still a placeholder.
+
+## Content still to supply
+
+- **Images:** the hero and timeline use the Pompeii images uploaded in Claude Design (`public/images/`). These are still striped placeholders, rendered by `Media.astro`; pass `src` once photos exist:
+  - the experience mode images (home tabs, Experience page)
+  - the Heritage and Cities hero images
+  - the team portraits (home and About)
+- **Vision film:** set `filmSrc` in `src/pages/experience.astro` to an .mp4/.webm file or a YouTube/Vimeo embed URL. Until then, the play button is disabled.
+- **Founders:** roles and bios ("role to confirm", "Short bio to be added").
+- **Dutch:** only the nav, CTAs and home hero are translated (`src/i18n/strings.ts`). Use `<T p={...} />` for new bilingual copy. Once the full NL translation exists, consider moving to `/nl/` routes for SEO.
+- **Footer:** the Privacy and Accessibility statement links still point to `#`.
+- **Production domain:** set `site` in `astro.config.mjs`.
