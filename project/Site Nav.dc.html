@@ -9,7 +9,9 @@
 <x-dc>
 <nav aria-label="Main" style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px clamp(20px,4vw,48px);font-family:'Geist',sans-serif">
   <a href="#main" style="position:absolute;left:-9999px;top:8px;background:#f5a524;color:#111214;padding:10px 14px;font:600 15px/1 'Geist',sans-serif;border-radius:4px;z-index:5" style-focus="left:16px">Skip to content</a>
-  <a href="Home.dc.html" aria-label="Visual History, home" style="font:500 22px/1 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4;white-space:nowrap">Visual History</a>
+  <a href="Home.dc.html" aria-label="Visual History, home" style="display:flex;align-items:center">
+  <img src="./vh.png" alt="Visual History" style="height:32px;width:auto;display:block">
+</a>
   <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
     <div style="display:flex;align-items:center;gap:clamp(16px,2.2vw,30px);font:500 15px/1 'Geist',sans-serif">
       <sc-for list="{{ links }}" as="l" hint-placeholder-count="5">
