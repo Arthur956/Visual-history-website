@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Visual History · Step into the past</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#0c0d0f;color:#ededec;-webkit-font-smoothing:antialiased}
+a{color:#f5a524;text-decoration:none}a:hover{color:#ffc766}
+:focus-visible{outline:2px solid #f5a524;outline-offset:3px}
+input,textarea{font:inherit}
+input::placeholder,textarea::placeholder{color:#7a7b80}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</helmet>
+<div ref="{{ heroRef }}" style="height:{{ heroHeight }};position:relative">
+  <header data-screen-label="01 Hero" style="position:sticky;top:0;height:100vh;min-height:640px;overflow:hidden">
+    <div style="position:absolute;inset:0;background:#2c2b29"><image-slot id="hero-ruin" shape="rect" placeholder="Hero · ruin today"></image-slot></div>
+    <div style="position:absolute;inset:0;background:#4a321d;clip-path:{{ clip }}"><image-slot id="hero-reconstruction" shape="rect" placeholder="Hero · reconstruction (scroll down to reveal)"></image-slot></div>
+    <div aria-hidden="true" style="position:absolute;top:0;bottom:0;left:{{ seam }};width:1px;background:#ffc766;box-shadow:0 0 24px 4px rgba(245,165,36,.55);opacity:{{ seamOp }};pointer-events:none"></div>
+    <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,11,13,.94) 0%,rgba(10,11,13,.72) 40%,rgba(10,11,13,0) 72%),linear-gradient(0deg,rgba(10,11,13,.85) 0%,rgba(10,11,13,0) 45%);pointer-events:none"></div>
+    <dc-import name="Site Nav" active="home" hint-size="100%,96px" style="position:absolute;top:0;left:0;right:0;z-index:10"></dc-import>
+    <div id="main" style="position:absolute;left:clamp(20px,4vw,48px);right:clamp(20px,4vw,48px);bottom:clamp(48px,8vh,88px);max-width:660px;display:flex;flex-direction:column;gap:24px">
+      <sc-if value="{{ isEN }}" hint-placeholder-val="{{ true }}">
+        <h1 style="margin:0;font:500 clamp(60px,8.4vw,116px)/0.97 'Geist',sans-serif;letter-spacing:-.03em;color:#fafaf9">Step into<br><em style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;letter-spacing:-.02em;color:#ffc766">the past.</em></h1>
+        <p style="margin:0;font:400 clamp(17px,1.5vw,20px)/1.55 'Geist',sans-serif;color:#dcdde0;text-wrap:pretty">We build immersive XR experiences that let visitors step into the past, and license them to heritage sites, museums and cities as a recurring platform, not a one-off project.</p>
+      </sc-if>
+      <sc-if value="{{ isNL }}" hint-placeholder-val="{{ false }}">
+        <h1 lang="nl" style="margin:0;font:500 clamp(60px,8.4vw,116px)/0.97 'Geist',sans-serif;letter-spacing:-.03em;color:#fafaf9">Stap in<br><em style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;letter-spacing:-.02em;color:#ffc766">het verleden.</em></h1>
+        <p lang="nl" style="margin:0;font:400 clamp(17px,1.5vw,20px)/1.55 'Geist',sans-serif;color:#dcdde0;text-wrap:pretty">Wij bouwen immersieve XR-ervaringen waarmee bezoekers in het verleden stappen, en bieden ze in licentie aan erfgoedsites, musea en steden als een terugkerend platform, geen eenmalig project.</p>
+      </sc-if>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+        <a href="Contact.dc.html" style="font:600 16px/1 'Geist',sans-serif;color:#111214;background:#f5a524;padding:18px 24px;border-radius:6px" style-hover="background:#ffc766;color:#111214">{{ ctaPrimary }}</a>
+        <a href="Experience.dc.html#film" style="font:500 16px/1 'Geist',sans-serif;color:#f5f5f4;padding:17px 22px;border-radius:6px;border:1px solid rgba(245,245,244,.45);display:flex;gap:10px;align-items:center" style-hover="border-color:#ffc766;color:#f5f5f4"><span aria-hidden="true" style="width:0;height:0;border-left:9px solid #ffc766;border-top:6px solid transparent;border-bottom:6px solid transparent"></span>{{ ctaFilm }}</a>
+      </div>
+    </div>
+  </header>
+</div>
+
+<main>
+<section data-screen-label="02 Problem" aria-labelledby="problem-h" style="background:#f3f2ee;color:#111214;padding:clamp(96px,12vw,160px) clamp(20px,4vw,48px)">
+  <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:64px">
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:880px">
+      <div style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.14em;color:#8f4f00;text-transform:uppercase">The problem</div>
+      <h2 id="problem-h" style="margin:0;font:500 clamp(36px,4.6vw,60px)/1.08 'Geist',sans-serif;letter-spacing:-.03em;color:#111214;text-wrap:pretty">Ruins ask visitors for an imagination most of them can't supply.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px 48px">
+      <div style="display:flex;flex-direction:column;gap:14px;padding-top:24px;border-top:1px solid #111214">
+        <div style="font:400 15px/1 'Geist Mono',monospace;color:#8f4f00">01</div>
+        <div style="font:500 26px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">A few stones, a sign, a floor plan.</div>
+        <p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#4a4b50;text-wrap:pretty">Without help, most visitors walk past foundations without ever seeing the building that stood there.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;padding-top:24px;border-top:1px solid #111214">
+        <div style="font:400 15px/1 'Geist Mono',monospace;color:#8f4f00">02</div>
+        <div style="font:500 26px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Younger audiences expect digital-first.</div>
+        <p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#4a4b50;text-wrap:pretty">Families, students and new visitors arrive with a phone in hand and expectations shaped by games and film.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;padding-top:24px;border-top:1px solid #111214">
+        <div style="font:400 15px/1 'Geist Mono',monospace;color:#8f4f00">03</div>
+        <div style="font:500 26px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Today's tools fall short.</div>
+        <p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#4a4b50;text-wrap:pretty">Most are shallow overlays or expensive one-off productions that age quickly and are never updated.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience" data-screen-label="03 Experience" aria-labelledby="exp-h" style="background:#131416;padding:clamp(96px,10vw,140px) clamp(20px,4vw,48px)">
+  <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:760px">
+        <div style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.14em;color:#f5a524;text-transform:uppercase">The experience</div>
+        <h2 id="exp-h" style="margin:0;font:500 clamp(36px,4.6vw,60px)/1.08 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4;text-wrap:pretty">One reconstruction, two ways to step inside it.</h2>
+      </div>
+      <a href="Experience.dc.html" style="font:500 16px/1 'Geist',sans-serif;color:#ffc766;padding:10px 0;border-bottom:1px solid rgba(255,199,102,.5)">Explore both modes →</a>
+    </div>
+    <div role="tablist" aria-label="Experience modes" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px">
+      <sc-for list="{{ modes }}" as="m" hint-placeholder-count="3">
+        <button role="tab" id="{{ m.tabId }}" aria-selected="{{ m.selected }}" aria-controls="mode-panel" tabindex="{{ m.tabindex }}" onClick="{{ m.select }}" onKeyDown="{{ tabKeys }}" style="text-align:left;cursor:pointer;padding:20px 0 4px;border:0;border-top:2px solid {{ m.border }};border-radius:0;background:transparent;display:flex;flex-direction:column;gap:10px">
+          <span style="font:500 12px/1 'Geist Mono',monospace;letter-spacing:.12em;color:{{ m.kickerColor }}">{{ m.kicker }}</span>
+          <span style="font:500 26px/1.15 'Geist',sans-serif;letter-spacing:-.03em;color:{{ m.titleColor }}">{{ m.title }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div id="mode-panel" role="tabpanel" aria-labelledby="{{ activeTabId }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(32px,4vw,64px);align-items:center">
+      <div style="aspect-ratio:4/3"><image-slot id="mode-{{ activeTabId }}" shape="rounded" radius="6" placeholder="Experience mode image"></image-slot></div>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <sc-if value="{{ tab0 }}" hint-placeholder-val="{{ true }}">
+          <h3 style="margin:0;font:500 36px/1.12 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Stand in the forum as it was.</h3>
+          <p style="margin:0;font:400 18px/1.6 'Geist',sans-serif;color:#c8c9cd;text-wrap:pretty">Our flagship mode. Visitors wear a lightweight mixed-reality headset and see the reconstruction anchored 1:1 onto the real foundations, aligned with LiDAR scans of the site.</p>
+          <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;font:400 17px/1.5 'Geist',sans-serif;color:#dcdde0">
+            <li style="display:flex;gap:12px"><span aria-hidden="true" style="color:#f5a524">—</span>LiDAR-anchored to the real foundations at 1:1 scale</li>
+            <li style="display:flex;gap:12px"><span aria-hidden="true" style="color:#f5a524">—</span>Interactive hotspots on objects, inscriptions and rooms</li>
+            <li style="display:flex;gap:12px"><span aria-hidden="true" style="color:#f5a524">—</span>Animated period life: markets, rituals, daily routines</li>
+          </ul>
+        </sc-if>
+        <sc-if value="{{ tab1 }}" hint-placeholder-val="{{ false }}">
+          <h3 style="margin:0;font:500 36px/1.12 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Time travel, wherever your audience is.</h3>
+          <p style="margin:0;font:400 18px/1.6 'Geist',sans-serif;color:#c8c9cd;text-wrap:pretty">A fully immersive 360° journey through the reconstruction, built for places away from the site itself.</p>
+          <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;font:400 17px/1.5 'Geist',sans-serif;color:#dcdde0">
+            <li style="display:flex;gap:12px"><span aria-hidden="true" style="color:#f5a524">—</span>360° environments with spatial audio</li>
+            <li style="display:flex;gap:12px"><span aria-hidden="true" style="color:#f5a524">—</span>For visitor centres, classrooms and travelling exhibitions</li>
+            <li style="display:flex;gap:12px"><span aria-hidden="true" style="color:#f5a524">—</span>Seated and standing versions for accessible use</li>
+          </ul>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;padding-top:56px;border-top:1px solid rgba(220,222,228,.14);display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:16px">
+        <h3 style="margin:0;font:500 32px/1.15 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Try the timeline</h3>
+        <div style="font:400 14px/1.4 'Geist Mono',monospace;color:#b4b5ba">Drag, or use the arrow keys</div>
+      </div>
+      <div style="position:relative;aspect-ratio:21/9;min-height:280px;border-radius:6px;overflow:hidden">
+        <div style="position:absolute;inset:0;background:#3e3324;opacity:{{ opBefore }};pointer-events:{{ peBefore }}"><image-slot id="era-ad62" shape="rect" placeholder="AD 62 (slider left)"></image-slot></div>
+        <div style="position:absolute;inset:0;background:#4a321d;opacity:{{ opDuring }};pointer-events:{{ peDuring }}"><image-slot id="era-ad79" shape="rect" placeholder="AD 79 (slider centre)"></image-slot></div>
+        <div style="position:absolute;inset:0;background:#2c2b29;opacity:{{ opAfter }};pointer-events:{{ peAfter }}"><image-slot id="era-today" shape="rect" placeholder="Today (slider right)"></image-slot></div>
+        <div aria-live="polite" style="position:absolute;left:20px;bottom:20px;right:20px;pointer-events:none;display:flex;flex-direction:column;gap:6px">
+          <div style="font:500 clamp(28px,3.4vw,44px)/1 'Geist',sans-serif;letter-spacing:-.03em;color:#fafaf9;text-shadow:0 2px 20px rgba(0,0,0,.6)">{{ eraTitle }}</div>
+          <div style="font:400 16px/1.4 'Geist',sans-serif;color:#ededec;text-shadow:0 1px 12px rgba(0,0,0,.7)">{{ eraSub }}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <input type="range" min="0" max="200" step="1" value="{{ era }}" onChange="{{ onEra }}" aria-label="Period" aria-valuetext="{{ eraTitle }}" style="width:100%;accent-color:#f5a524;height:28px;cursor:pointer">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <button onClick="{{ eraBefore }}" style="text-align:left;background:none;border:0;cursor:pointer;padding:6px 0;display:flex;flex-direction:column;gap:4px"><span style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.12em;color:#f5a524">BEFORE</span><span style="font:400 15px/1.3 'Geist',sans-serif;color:#c8c9cd">AD 62</span></button>
+          <button onClick="{{ eraDuring }}" style="text-align:center;background:none;border:0;cursor:pointer;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.12em;color:#f5a524">DURING</span><span style="font:400 15px/1.3 'Geist',sans-serif;color:#c8c9cd">AD 79</span></button>
+          <button onClick="{{ eraAfter }}" style="text-align:right;background:none;border:0;cursor:pointer;padding:6px 0;display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.12em;color:#f5a524">AFTER</span><span style="font:400 15px/1.3 'Geist',sans-serif;color:#c8c9cd">Today</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process" data-screen-label="04 Process" aria-labelledby="proc-h" style="background:#f3f2ee;color:#111214;padding:clamp(96px,10vw,140px) clamp(20px,4vw,48px)">
+  <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:56px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:32px;align-items:end">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.14em;color:#8f4f00;text-transform:uppercase">How a reconstruction is built</div>
+        <h2 id="proc-h" style="margin:0;font:500 clamp(36px,4.6vw,60px)/1.08 'Geist',sans-serif;letter-spacing:-.03em;color:#111214;text-wrap:pretty">Every stone starts with a historian.</h2>
+      </div>
+      <p style="margin:0;font:400 18px/1.6 'Geist',sans-serif;color:#4a4b50;text-wrap:pretty;max-width:520px">Accuracy is what makes a reconstruction worth trusting. Each scene is researched with historians and validated before it reaches a visitor, and every source is documented.</p>
+    </div>
+    <ol style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;border-top:1px solid #111214">
+      <li style="padding:28px 24px 28px 20px;display:flex;flex-direction:column;gap:12px;background:#e7e5df;margin-right:1px">
+        <div style="font:500 14px/1 'Geist Mono',monospace;color:#8f4f00">01</div>
+        <div style="font:500 24px/1.15 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Historical research &amp; validation</div>
+        <p style="margin:0;font:400 16px/1.55 'Geist',sans-serif;color:#4a4b50">Archives, excavation reports and expert review. Nothing is modelled before it is sourced.</p>
+        <div style="align-self:flex-start;margin-top:auto;font:500 12px/1 'Geist Mono',monospace;letter-spacing:.08em;color:#111214;border:1px solid #111214;border-radius:6px;padding:7px 10px">HISTORIAN-VALIDATED</div>
+      </li>
+      <li style="padding:28px 24px 28px 20px;display:flex;flex-direction:column;gap:12px">
+        <div style="font:500 14px/1 'Geist Mono',monospace;color:#8f4f00">02</div>
+        <div style="font:500 24px/1.15 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">3D modelling</div>
+        <p style="margin:0;font:400 16px/1.55 'Geist',sans-serif;color:#4a4b50">Architecture, materials and period life built from the validated research.</p>
+      </li>
+      <li style="padding:28px 24px 28px 20px;display:flex;flex-direction:column;gap:12px">
+        <div style="font:500 14px/1 'Geist Mono',monospace;color:#8f4f00">03</div>
+        <div style="font:500 24px/1.15 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Spatial anchoring</div>
+        <p style="margin:0;font:400 16px/1.55 'Geist',sans-serif;color:#4a4b50">LiDAR scans of the site align the model to the real foundations.</p>
+      </li>
+      <li style="padding:28px 24px 28px 20px;display:flex;flex-direction:column;gap:12px">
+        <div style="font:500 14px/1 'Geist Mono',monospace;color:#8f4f00">04</div>
+        <div style="font:500 24px/1.15 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Optimisation &amp; UX testing</div>
+        <p style="margin:0;font:400 16px/1.55 'Geist',sans-serif;color:#4a4b50">Tested on site with real visitors, including accessibility needs.</p>
+      </li>
+      <li style="padding:28px 24px 28px 20px;display:flex;flex-direction:column;gap:12px">
+        <div style="font:500 14px/1 'Geist Mono',monospace;color:#8f4f00">05</div>
+        <div style="font:500 24px/1.15 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Deployment &amp; handover</div>
+        <p style="margin:0;font:400 16px/1.55 'Geist',sans-serif;color:#4a4b50">Installed, staff trained, and supported from day one.</p>
+      </li>
+    </ol>
+    <a href="Process.dc.html" style="align-self:flex-start;font:500 16px/1 'Geist',sans-serif;color:#8f4f00;padding:10px 0;border-bottom:1px solid #8f4f00">See the full process →</a>
+  </div>
+</section>
+
+<section id="platform" data-screen-label="05 Platform" aria-labelledby="plat-h" style="padding:clamp(96px,10vw,140px) clamp(20px,4vw,48px)">
+  <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,5vw,80px);align-items:start">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.14em;color:#f5a524;text-transform:uppercase">A platform, not a project</div>
+      <h2 id="plat-h" style="margin:0;font:500 clamp(36px,4.6vw,60px)/1.08 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4;text-wrap:pretty">A living experience that keeps improving after launch.</h2>
+      <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;border-top:1px solid rgba(220,222,228,.14)">
+        <li style="padding:18px 0;border-bottom:1px solid rgba(220,222,228,.14);display:grid;grid-template-columns:40px 1fr;gap:8px;font:400 18px/1.45 'Geist',sans-serif;color:#dcdde0"><span style="font:400 14px/1.8 'Geist Mono',monospace;color:#9a9ba1">01</span>The reconstructed experience</li>
+        <li style="padding:18px 0;border-bottom:1px solid rgba(220,222,228,.14);display:grid;grid-template-columns:40px 1fr;gap:8px;font:400 18px/1.45 'Geist',sans-serif;color:#dcdde0"><span style="font:400 14px/1.8 'Geist Mono',monospace;color:#9a9ba1">02</span>Hardware package</li>
+        <li style="padding:18px 0;border-bottom:1px solid rgba(220,222,228,.14);display:grid;grid-template-columns:40px 1fr;gap:8px;font:400 18px/1.45 'Geist',sans-serif;color:#dcdde0"><span style="font:400 14px/1.8 'Geist Mono',monospace;color:#9a9ba1">03</span>CMS &amp; analytics dashboard</li>
+        <li style="padding:18px 0;border-bottom:1px solid rgba(220,222,228,.14);display:grid;grid-template-columns:40px 1fr;gap:8px;font:400 18px/1.45 'Geist',sans-serif;color:#dcdde0"><span style="font:400 14px/1.8 'Geist Mono',monospace;color:#9a9ba1">04</span>Staff training</li>
+        <li style="padding:18px 0;border-bottom:1px solid rgba(220,222,228,.14);display:grid;grid-template-columns:40px 1fr;gap:8px;font:400 18px/1.45 'Geist',sans-serif;color:#dcdde0"><span style="font:400 14px/1.8 'Geist Mono',monospace;color:#9a9ba1">05</span>Ongoing maintenance and content updates</li>
+        <li style="padding:18px 0;border-bottom:1px solid rgba(220,222,228,.14);display:grid;grid-template-columns:40px 1fr;gap:8px;font:400 18px/1.45 'Geist',sans-serif;color:#dcdde0"><span style="font:400 14px/1.8 'Geist Mono',monospace;color:#9a9ba1">06</span>Optional content packs: new eras, events, languages</li>
+      </ul>
+    </div>
+    <div style="background:#1a1b1e;border-radius:8px;padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <h3 style="margin:0;font:500 30px/1.15 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">What could it earn your site?</h3>
+        <p style="margin:0;font:400 16px/1.5 'Geist',sans-serif;color:#b4b5ba">Adjust the figures to match your site.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <sc-for list="{{ calcFields }}" as="f" hint-placeholder-count="5">
+          <label style="display:flex;flex-direction:column;gap:10px">
+            <span style="display:flex;justify-content:space-between;gap:12px;font:500 15px/1.3 'Geist',sans-serif;color:#dcdde0"><span>{{ f.label }}</span><span style="font:500 15px/1.3 'Geist Mono',monospace;color:#ffc766">{{ f.display }}</span></span>
+            <input type="range" min="{{ f.min }}" max="{{ f.max }}" step="{{ f.step }}" value="{{ f.value }}" onChange="{{ f.onChange }}" aria-valuetext="{{ f.display }}" style="width:100%;accent-color:#f5a524;height:24px;cursor:pointer">
+          </label>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;padding-top:24px;border-top:1px solid rgba(220,222,228,.16)">
+        <div style="font:500 12px/1 'Geist Mono',monospace;letter-spacing:.12em;color:#9a9ba1">POTENTIAL ADDITIONAL REVENUE PER YEAR</div>
+        <div aria-live="polite" style="font:500 clamp(48px,5.4vw,72px)/1 'Geist',sans-serif;letter-spacing:-.03em;color:#fafaf9;font-variant-numeric:tabular-nums">{{ calcTotal }}</div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px 16px;font:400 15px/1.4 'Geist',sans-serif;color:#b4b5ba">
+          <span>From experience add-on tickets</span><span style="font-family:'Geist Mono',monospace;color:#dcdde0">{{ calcAddon }}</span>
+          <span>From additional visitors</span><span style="font-family:'Geist Mono',monospace;color:#dcdde0">{{ calcVisitors }}</span>
+        </div>
+        <p style="margin:6px 0 0;font:400 13px/1.5 'Geist',sans-serif;color:#8b8c92">Illustrative estimate based on your inputs, before licence costs. Not a forecast or guarantee.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="06 Why us" aria-labelledby="why-h" style="background:#f3f2ee;color:#111214;padding:clamp(96px,10vw,140px) clamp(20px,4vw,48px)">
+  <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:760px">
+      <div style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.14em;color:#8f4f00;text-transform:uppercase">Why Visual History</div>
+      <h2 id="why-h" style="margin:0;font:500 clamp(36px,4.6vw,60px)/1.08 'Geist',sans-serif;letter-spacing:-.03em;color:#111214;text-wrap:pretty">Built for heritage, from the foundations up.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px 48px">
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 24px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Spatially anchored MR</div><p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#4a4b50">Reconstructions sit exactly on the real remains, not floating beside them.</p></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 24px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Multi-era toggling</div><p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#4a4b50">Move between periods of the same place and see how it changed.</p></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 24px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Historian validation</div><p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#4a4b50">Every scene reviewed by experts, with sources documented for curators and grant bodies.</p></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 24px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Multi-modal delivery</div><p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#4a4b50">One reconstruction powers both on-site mixed reality and off-site VR.</p></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 24px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Accessibility-first</div><p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#4a4b50">Captions, audio description, seated modes and large text from the start.</p></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 24px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">A compounding asset library</div><p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#4a4b50">Every project grows a library of validated assets, so later content is faster to build.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how-we-work" data-screen-label="07 How we work" aria-labelledby="work-h" style="background:#131416;padding:clamp(96px,10vw,140px) clamp(20px,4vw,48px)">
+  <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:64px">
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:820px">
+      <div style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.14em;color:#f5a524;text-transform:uppercase">How we work with you</div>
+      <h2 id="work-h" style="margin:0;font:500 clamp(36px,4.6vw,60px)/1.08 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4;text-wrap:pretty">Zero cost at signing.</h2>
+      <p style="margin:0;font:400 18px/1.6 'Geist',sans-serif;color:#c8c9cd;text-wrap:pretty">We take on the setup so your budget isn't the barrier. Choose the route that fits your institution.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:40px clamp(40px,6vw,96px)">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font:500 12px/1 'Geist Mono',monospace;letter-spacing:.12em;color:#f5a524">ROUTE A</div>
+        <div style="font:500 clamp(32px,3.4vw,44px)/1.1 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Grant-funded setup</div>
+        <p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#b4b5ba;text-wrap:pretty">We act as your grant-readiness partner, preparing the concept, budget and documentation for programmes such as VLAIO, Creative Europe and Erfgoed Vlaanderen.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font:500 12px/1 'Geist Mono',monospace;letter-spacing:.12em;color:#f5a524">ROUTE B</div>
+        <div style="font:500 clamp(32px,3.4vw,44px)/1.1 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Amortised setup</div>
+        <p style="margin:0;font:400 17px/1.6 'Geist',sans-serif;color:#b4b5ba;text-wrap:pretty">The setup cost is spread across the licence term, so the experience can launch without an upfront investment.</p>
+      </div>
+    </div>
+    <ol style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px">
+      <li style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid #f5a524"><span style="font:500 14px/1 'Geist Mono',monospace;color:#f5a524">STEP 1</span><span style="font:500 22px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Vision meeting</span><span style="font:400 15px/1.5 'Geist',sans-serif;color:#b4b5ba">We listen to your site, story and goals.</span></li>
+      <li style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid rgba(220,222,228,.22)"><span style="font:500 14px/1 'Geist Mono',monospace;color:#f5a524">STEP 2</span><span style="font:500 22px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Concept proposal</span><span style="font:400 15px/1.5 'Geist',sans-serif;color:#b4b5ba">A tailored concept and experience outline.</span></li>
+      <li style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid rgba(220,222,228,.22)"><span style="font:500 14px/1 'Geist Mono',monospace;color:#f5a524">STEP 3</span><span style="font:500 22px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Funding support</span><span style="font:400 15px/1.5 'Geist',sans-serif;color:#b4b5ba">We prepare the grant or amortisation route.</span></li>
+      <li style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid rgba(220,222,228,.22)"><span style="font:500 14px/1 'Geist Mono',monospace;color:#f5a524">STEP 4</span><span style="font:500 22px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Pilot</span><span style="font:400 15px/1.5 'Geist',sans-serif;color:#b4b5ba">A first experience tested on your site.</span></li>
+      <li style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid rgba(220,222,228,.22)"><span style="font:500 14px/1 'Geist Mono',monospace;color:#f5a524">STEP 5</span><span style="font:500 22px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Licensing</span><span style="font:400 15px/1.5 'Geist',sans-serif;color:#b4b5ba">The platform runs and grows with you.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="partner" data-screen-label="08 Flagship partner" aria-labelledby="partner-h" style="background:#f3f2ee;color:#111214;padding:clamp(96px,10vw,140px) clamp(20px,4vw,48px)">
+  <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,6vw,96px);align-items:start">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.14em;color:#8f4f00;text-transform:uppercase">An invitation</div>
+      <h2 id="partner-h" style="margin:0;font:500 clamp(40px,5vw,68px)/1.04 'Geist',sans-serif;letter-spacing:-.03em;color:#111214;text-wrap:pretty">We're selecting our first flagship partner in Flanders.</h2>
+      <p style="margin:0;font:400 18px/1.6 'Geist',sans-serif;color:#4a4b50;text-wrap:pretty">We don't build speculatively. Our first full reconstruction will be made together with one partner, shaped around their site and their story.</p>
+    </div>
+    <div>
+      <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:28px">
+          <div style="font:500 28px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Book a vision meeting</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px 32px">
+            <label style="display:flex;flex-direction:column;gap:6px;font:500 14px/1 'Geist',sans-serif;color:#4a4b50">Name<input name="name" required autocomplete="name" style="background:transparent;border:0;border-bottom:1px solid #111214;border-radius:0;padding:12px 0;color:#111214;font-size:18px"></label>
+            <label style="display:flex;flex-direction:column;gap:6px;font:500 14px/1 'Geist',sans-serif;color:#4a4b50">Organisation<input name="org" required autocomplete="organization" style="background:transparent;border:0;border-bottom:1px solid #111214;border-radius:0;padding:12px 0;color:#111214;font-size:18px"></label>
+            <label style="display:flex;flex-direction:column;gap:6px;font:500 14px/1 'Geist',sans-serif;color:#4a4b50">Role<input name="role" autocomplete="organization-title" style="background:transparent;border:0;border-bottom:1px solid #111214;border-radius:0;padding:12px 0;color:#111214;font-size:18px"></label>
+            <label style="display:flex;flex-direction:column;gap:6px;font:500 14px/1 'Geist',sans-serif;color:#4a4b50">Site<input name="site" style="background:transparent;border:0;border-bottom:1px solid #111214;border-radius:0;padding:12px 0;color:#111214;font-size:18px"></label>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:6px;font:500 14px/1 'Geist',sans-serif;color:#4a4b50">Message<textarea name="message" rows="3" style="background:transparent;border:0;border-bottom:1px solid #111214;border-radius:0;padding:12px 0;color:#111214;font-size:18px;resize:vertical"></textarea></label>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:20px">
+            <button type="submit" style="font:600 16px/1 'Geist',sans-serif;color:#f5f5f4;background:#111214;border:0;padding:18px 26px;border-radius:6px;cursor:pointer" style-hover="background:#8f4f00">Request a meeting</button>
+            <span style="font:400 14px/1.5 'Geist',sans-serif;color:#4a4b50">We reply within two working days, in English or Dutch.</span>
+          </div>
+        </form>
+      </sc-if>
+      <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="display:flex;flex-direction:column;gap:14px;padding:24px 0">
+          <div style="font:500 32px/1.2 'Geist',sans-serif;letter-spacing:-.03em;color:#111214">Thank you.</div>
+          <p style="margin:0;font:400 18px/1.6 'Geist',sans-serif;color:#4a4b50">Arthur or Ignace will be in touch within two working days to arrange your vision meeting.</p>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="09 Team" aria-labelledby="team-h" style="padding:clamp(96px,10vw,140px) clamp(20px,4vw,48px)">
+  <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="font:500 13px/1 'Geist Mono',monospace;letter-spacing:.14em;color:#f5a524;text-transform:uppercase">Team &amp; advisors</div>
+        <h2 id="team-h" style="margin:0;font:500 clamp(36px,4.6vw,60px)/1.08 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">The people you'll meet.</h2>
+      </div>
+      <a href="About.dc.html" style="font:500 16px/1 'Geist',sans-serif;color:#ffc766;padding:10px 0;border-bottom:1px solid rgba(255,199,102,.5)">About Visual History →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="aspect-ratio:4/5"><image-slot id="team-arthur" shape="rounded" radius="6" placeholder="Portrait"></image-slot></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="font:500 26px/1.1 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Arthur</div><div style="font:400 16px/1.4 'Geist',sans-serif;color:#b4b5ba">Co-founder · role to confirm</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="aspect-ratio:4/5"><image-slot id="team-ignace" shape="rounded" radius="6" placeholder="Portrait"></image-slot></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="font:500 26px/1.1 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Ignace</div><div style="font:400 16px/1.4 'Geist',sans-serif;color:#b4b5ba">Co-founder · role to confirm</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="aspect-ratio:4/5;border-radius:6px;background:#1a1b1e;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center"><span style="font:500 italic 22px/1.3 'Geist',sans-serif;letter-spacing:-.03em;color:#dcdde0">Seat reserved for a historian or heritage advisor</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="font:500 26px/1.1 'Geist',sans-serif;letter-spacing:-.03em;color:#f5f5f4">Historian / heritage advisor</div><div style="font:400 16px/1.4 'Geist',sans-serif;color:#b4b5ba">To be announced</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<dc-import name="Site Footer" hint-size="100%,360px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { p: 0, reduced: false, lang: 'en', tab: 0, era: 100, sent: false,
+    visitors: 60000, ticket: 12, share: 25, addon: 8, uplift: 8 };
+  heroRef = React.createRef();
+  componentDidMount() {
+    const reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    let lang = 'en'; try { lang = localStorage.getItem('vh-lang') || 'en'; } catch (e) {}
+    this.setState({ reduced, lang });
+    this.onS = () => {
+      const el = this.heroRef.current; if (!el) return;
+      const r = el.getBoundingClientRect(), range = r.height - window.innerHeight;
+      if (range > 0) this.setState({ p: Math.max(0, Math.min(1, -r.top / range)) });
+    };
+    this.onL = e => this.setState({ lang: e.detail });
+    window.addEventListener('scroll', this.onS, { passive: true });
+    window.addEventListener('resize', this.onS);
+    window.addEventListener('vh-lang', this.onL);
+    this.onS();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onS); window.removeEventListener('resize', this.onS); window.removeEventListener('vh-lang', this.onL);
+  }
+  renderVals() {
+    const s = this.state;
+    const scroll = !s.reduced;
+    const p = scroll ? s.p : 1;
+    const nl = s.lang === 'nl';
+    const modeDefs = [
+      ['FLAGSHIP · ON-SITE', 'Mixed Reality'],
+      ['VISITOR CENTRES · CLASSROOMS', 'Immersive VR time travel'],
+    ];
+    const modes = modeDefs.map(([kicker, title], i) => ({
+      kicker, title, tabId: 'mode-tab-' + i, selected: s.tab === i, tabindex: s.tab === i ? 0 : -1,
+      select: () => this.setState({ tab: i }),
+      border: s.tab === i ? '#f5a524' : 'rgba(220,222,228,.18)',
+      kickerColor: s.tab === i ? '#f5a524' : '#9a9ba1',
+      titleColor: s.tab === i ? '#f5f5f4' : '#b4b5ba',
+    }));
+    const v = s.era;
+    const eras = [
+      ['AD 62 · The forum before the earthquake', 'Temples intact, the city at its height.'],
+      ['AD 79 · The city in its final days', 'Repairs under way, markets busy, Vesuvius on the horizon.'],
+      ['Today · The excavated site', 'What visitors see when they arrive.'],
+    ];
+    const ei = v < 50 ? 0 : v <= 150 ? 1 : 2;
+    const eur = n => '€' + Math.round(n).toLocaleString('en-IE');
+    const num = n => Math.round(n).toLocaleString('en-IE');
+    const addonRev = s.visitors * (s.share / 100) * s.addon;
+    const visitorRev = s.visitors * (s.uplift / 100) * s.ticket;
+    const field = (key, label, min, max, step, fmt) => ({
+      label, min, max, step, value: s[key], display: fmt(s[key]),
+      onChange: e => this.setState({ [key]: +e.target.value }),
+    });
+    return {
+      heroRef: this.heroRef, heroHeight: scroll ? '220vh' : '100vh',
+      clip: `inset(0 0 0 ${(1 - p) * 100}%)`, seam: `${(1 - p) * 100}%`, seamOp: p > 0.01 && p < 0.99 ? 1 : 0,
+      isEN: !nl, isNL: nl,
+      ctaPrimary: nl ? 'Plan een visiegesprek' : 'Book a vision meeting',
+      ctaFilm: nl ? 'Bekijk de visiefilm' : 'Watch the vision film',
+      modes, activeTabId: 'mode-tab-' + s.tab, tab0: s.tab === 0, tab1: s.tab === 1, 
+      tabKeys: e => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const t = (s.tab + 1) % 2;
+        this.setState({ tab: t }, () => { const b = document.getElementById('mode-tab-' + t); b && b.focus(); });
+      },
+      era: v, onEra: e => this.setState({ era: +e.target.value }),
+      opBefore: Math.max(0, 1 - v / 100), opDuring: v <= 100 ? v / 100 : 1 - (v - 100) / 100, opAfter: Math.max(0, (v - 100) / 100),
+      peBefore: ei === 0 ? 'auto' : 'none', peDuring: ei === 1 ? 'auto' : 'none', peAfter: ei === 2 ? 'auto' : 'none',
+      eraTitle: eras[ei][0], eraSub: eras[ei][1],
+      eraBefore: () => this.setState({ era: 0 }), eraDuring: () => this.setState({ era: 100 }), eraAfter: () => this.setState({ era: 200 }),
+      calcFields: [
+        field('visitors', 'Annual visitors', 5000, 500000, 5000, num),
+        field('ticket', 'Average ticket price', 2, 40, 1, eur),
+        field('share', 'Visitors who choose the experience', 5, 80, 1, x => x + '%'),
+        field('addon', 'Experience add-on price', 2, 25, 1, eur),
+        field('uplift', 'Increase in visitors', 0, 30, 1, x => '+' + x + '%'),
+      ],
+      calcAddon: eur(addonRev), calcVisitors: eur(visitorRev), calcTotal: eur(addonRev + visitorRev),
+      notSent: !s.sent, sent: s.sent,
+      onSubmit: e => { e.preventDefault(); this.setState({ sent: true }); },
+    };
+  }
+}
+</script>
+</body>
+</html>
